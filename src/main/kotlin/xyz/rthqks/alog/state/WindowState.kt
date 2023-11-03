@@ -4,5 +4,7 @@ sealed class WindowState
 
 data object FilePickerWindowState : WindowState()
 
-data object ChartWindowState : WindowState()
+data class ChartWindowState(
+    val chartState: ChartState,
+) : WindowState()
 

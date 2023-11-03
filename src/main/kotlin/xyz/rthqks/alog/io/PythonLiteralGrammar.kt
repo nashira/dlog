@@ -88,7 +88,7 @@ object PythonLiteralGrammar : Grammar<Any?>() {
             separated(string and -colon and parser(this::pythonValue), comma, true) and
             -closingBrace)
         .map {
-            it.terms.map { (key, v) -> Pair(key, v) }.toMap()
+            it.terms.associate { (key, v) -> Pair(key, v) }
         }
     private val pythonArray: Parser<List<Any?>> = (-openingBracket and
             separated(parser(this::pythonValue), comma, true) and
