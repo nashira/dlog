@@ -12,6 +12,20 @@ class CreateAlogFromMap {
         val timestamps = map["timex"] as? List<Double> ?: emptyList()
         val temp1 = map["temp1"] as? List<Double> ?: emptyList()
         val temp2 = map["temp2"] as? List<Double> ?: emptyList()
-        return AlogDocument(title, timestamps, temp1, temp2)
+        val timeIndex = (map["timeindex"] as? List<Double> ?: emptyList()).map { it.toInt() }
+
+        return AlogDocument(
+            title,
+            map["xmin"] as? Double ?: 0.0,
+            map["xmax"] as? Double ?: 1.0,
+            map["ymin"] as? Double ?: 0.0,
+            map["ymax"] as? Double ?: 250.0,
+            map["zmin"] as? Double ?: 0.0,
+            map["zmax"] as? Double ?: 25.0,
+            timestamps,
+            temp1,
+            temp2,
+            timeIndex,
+        )
     }
 }
