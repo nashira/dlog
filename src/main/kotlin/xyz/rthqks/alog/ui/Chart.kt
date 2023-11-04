@@ -77,51 +77,43 @@ private fun DrawScope.drawAxis(axis: Axis, textMeasurer: TextMeasurer, textStyle
     val end = when (axis.position) {
         AxisPosition.Top,
         AxisPosition.Right -> bounds.topRight
-
         AxisPosition.Bottom -> bounds.bottomRight
         AxisPosition.Left -> bounds.topLeft
     }
-    val tickStart = when (axis.position) {
+    val axisVec = (end - start)
+    val axisUnit = axisVec.normalize()
+    val axisNormal = when (axis.position) {
+        AxisPosition.Bottom,
+        AxisPosition.Right -> Offset(-axisUnit.y, axisUnit.x)
         AxisPosition.Top,
-        AxisPosition.Bottom -> Offset(0f, axis.tickSize)
-
-        AxisPosition.Right,
-        AxisPosition.Left -> Offset(axis.tickSize, 0f)
+        AxisPosition.Left -> Offset(axisUnit.y, -axisUnit.x)
     }
-    val tickEnd = when (axis.position) {
-        AxisPosition.Top,
-        AxisPosition.Bottom -> Offset(0f, -axis.tickSize)
-
-        AxisPosition.Right,
-        AxisPosition.Left -> Offset(-axis.tickSize, 0f)
-    }
-    val tickVec = (end - start)
-    val tickVecNorm = tickVec.normalize()
-    val tickGap = tickVec.length() / axis.ticks
+    val tickGap = axisVec.length() / axis.ticks
 
     drawLine(Color.Gray, transform * start, transform * end)
 
     (0..axis.ticks).forEach {
-        val v = start + tickVecNorm * (it * tickGap)
-        val c = transform * v
+        val c = transform * (start + axisUnit * (it * tickGap))
         drawLine(
             Color.Gray,
-            c + tickStart,
-            c + tickEnd
+            c + (axisNormal * axis.tickSize),
+            c + (axisNormal * -axis.tickSize)
         )
     }
 
-    val tickValGap = tickVec.length() / axis.labels
+    val labelGap = axisVec.length() / axis.labels
     (0..axis.labels).forEach {
-        val v = start + tickVecNorm * (it * tickValGap)
-        val c = transform * v
+        val pos = start + (axisUnit * (it * labelGap))
+        val c = transform * pos
+//        val tickVal = pos.length()
         val tickVal = when (axis.position) {
             AxisPosition.Top,
-            AxisPosition.Bottom -> v.x
+            AxisPosition.Bottom -> pos.x
 
             AxisPosition.Right,
-            AxisPosition.Left -> v.y
+            AxisPosition.Left -> pos.y
         }
+
         val text = axis.labelFormatter(tickVal)
         val result = textMeasurer.measure(text, textStyle)
 
@@ -142,6 +134,8 @@ private fun DrawScope.drawAxis(axis: Axis, textMeasurer: TextMeasurer, textStyle
 
 private operator fun Offset.minus(intOffset: IntOffset) = Offset(x - intOffset.x, y - intOffset.y)
 
+private fun Offset.dot(offset: Offset) = offset.x * x + offset.y * y
+
 private operator fun Matrix.times(offset: Offset) = map(offset)
 
 private fun Rect.fitTo(window: Size): Matrix = Matrix().apply {
@@ -150,38 +144,34 @@ private fun Rect.fitTo(window: Size): Matrix = Matrix().apply {
     scale(scale.x, scale.y)
 }
 
-private fun getLinearPath(data: List<Offset>): Path {
-    return Path().apply {
-        data.forEachIndexed { i, it ->
-            if (i == 0) {
-                moveTo(it.x, it.y)
-            } else {
-                lineTo(it.x, it.y)
-            }
+private fun getLinearPath(data: List<Offset>): Path = Path().apply {
+    data.forEachIndexed { i, it ->
+        if (i == 0) {
+            moveTo(it.x, it.y)
+        } else {
+            lineTo(it.x, it.y)
         }
     }
 }
 
 private fun getCubicPath(
     data: List<Offset>,
-): Path {
+): Path = Path().apply {
     val tan = (listOf(data.first()) + data + data.last()).windowed(3).map {
         (it[2] - it[0]).normalize()
     }
-    return Path().apply {
-        (data.first()).let {
-            moveTo(it.x, it.y)
-        }
-        for (i in 1 until data.size) {
-            val p1 = data[i - 1]
-            val p2 = data[i]
-            val t1 = tan[i - 1]
-            val t2 = tan[i]
-            val l = (p2 - p1).length() / 3
+    (data.first()).let {
+        moveTo(it.x, it.y)
+    }
+    for (i in 1 until data.size) {
+        val p1 = data[i - 1]
+        val p2 = data[i]
+        val t1 = tan[i - 1]
+        val t2 = tan[i]
+        val l = (p2 - p1).length() / 3
 
-            val c1 = p1 + (t1 * l)
-            val c2 = p2 - (t2 * l)
-            cubicTo(c1.x, c1.y, c2.x, c2.y, p2.x, p2.y)
-        }
+        val c1 = p1 + (t1 * l)
+        val c2 = p2 - (t2 * l)
+        cubicTo(c1.x, c1.y, c2.x, c2.y, p2.x, p2.y)
     }
 }

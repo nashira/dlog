@@ -9,7 +9,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 class ChartState(
     val title: String,
     val axes: List<Axis>,
-    val timeSeries: List<TimeSeries>
+    val timeSeries: List<TimeSeries>,
+    val annotations: List<Annotation>,
 )
 
 data class Axis(
@@ -20,14 +21,6 @@ data class Axis(
     val position: AxisPosition,
     val labelFormatter: (Float) -> String = { it.toString() }
 )
-
-enum class AxisPosition {
-    Top, Bottom, Right, Left
-}
-
-enum class LineStyle {
-    Linear, Cubic
-}
 
 data class TimeSeries(
     val bounds: Rect,
@@ -42,4 +35,16 @@ data class TimeSeries(
             join = StrokeJoin.Round,
         )
     }
+}
+
+data class Annotation(
+    val text: String
+)
+
+enum class AxisPosition {
+    Top, Bottom, Right, Left
+}
+
+enum class LineStyle {
+    Linear, Cubic
 }

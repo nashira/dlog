@@ -41,10 +41,10 @@ class CreateChartStateFromAlog {
             )
 
             val fgStroke = Stroke(4f, join = StrokeJoin.Round)
-            ts += TimeSeries(dxBounds, bts.derivative(6), Color(0xff8888ff))
             ts += TimeSeries(dxBounds, ets.derivative(6), Color(0xffff8888))
-            ts += TimeSeries(bounds, bts, Color.Blue, fgStroke)
+            ts += TimeSeries(dxBounds, bts.derivative(6), Color(0xff8888ff))
             ts += TimeSeries(bounds, ets, Color.Red, fgStroke)
+            ts += TimeSeries(bounds, bts, Color.Blue, fgStroke)
 
             axes += Axis(25, 5, 5f, bounds, AxisPosition.Left) { "%.0f".format(it) }
             axes += Axis(25, 5, 5f, bounds, AxisPosition.Bottom) {
@@ -53,7 +53,7 @@ class CreateChartStateFromAlog {
             axes += Axis(25, 5, 5f, dxBounds, AxisPosition.Right) { "%.0f".format(it) }
         }
 
-        return ChartState(doc.title, axes, ts)
+        return ChartState(doc.title, axes, ts, emptyList())
     }
 }
 
