@@ -17,17 +17,9 @@ fun ChartWindow(
         title = state.chartState.title,
         onCloseRequest = { reducer(CloseWindow(state)) }
     ) {
-        MenuBar {
-            Menu(
-                text = "File"
-            ) {
-                Item(
-                    "Open",
-                    onClick = reducer.bind(ShowFileSelector)
-                )
-            }
-        }
 
-        Chart(state.chartState)
+        GlobalMenu(reducer)
+
+        Chart(state.chartState, reducer)
     }
 }

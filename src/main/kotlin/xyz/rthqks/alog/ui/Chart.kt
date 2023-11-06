@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -13,14 +14,19 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.inset
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.rthqks.alog.div
 import xyz.rthqks.alog.length
+import xyz.rthqks.alog.logic.Reducer
 import xyz.rthqks.alog.normalize
 import xyz.rthqks.alog.state.Axis
 import xyz.rthqks.alog.state.AxisPosition
@@ -28,24 +34,28 @@ import xyz.rthqks.alog.state.ChartState
 import xyz.rthqks.alog.state.LineStyle
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Chart(
-    state: ChartState
+    state: ChartState,
+    reducer: Reducer,
 ) {
     val textMeasurer = rememberTextMeasurer()
 
     val textStyle = TextStyle(
         fontSize = 12.sp,
-        color = Color.Gray,
+        color = Color.Gray
     )
+    val padding = 72.dp
 
     Canvas(
         modifier = Modifier
             .background(Color.White)
+            .onPointerEvent(PointerEventType.Move) {
+            }
             .fillMaxSize()
     ) {
-
-        inset(72f, 72f) {
+        inset(padding.value) {
             println(size)
 
             state.axes.forEach {
@@ -60,6 +70,20 @@ fun Chart(
                 val transform = it.bounds.fitTo(size)
                 path.transform(transform)
                 drawPath(path, it.color, style = it.style)
+            }
+
+            state.annotations.forEach {
+                val transform = it.bounds.fitTo(size)
+                val result = textMeasurer.measure(it.text, textStyle)
+                val pos = transform * Offset(it.pos.x, it.bounds.top)
+                val pos2 = transform * Offset(it.pos.x, it.bounds.bottom)
+
+                drawLine(Color.Gray, pos, pos2)
+
+                drawText(
+                    textLayoutResult = result,
+                    topLeft = Offset(pos.x + 10f, pos.y)
+                )
             }
         }
     }
@@ -77,6 +101,7 @@ private fun DrawScope.drawAxis(axis: Axis, textMeasurer: TextMeasurer, textStyle
     val end = when (axis.position) {
         AxisPosition.Top,
         AxisPosition.Right -> bounds.topRight
+
         AxisPosition.Bottom -> bounds.bottomRight
         AxisPosition.Left -> bounds.topLeft
     }
@@ -85,6 +110,7 @@ private fun DrawScope.drawAxis(axis: Axis, textMeasurer: TextMeasurer, textStyle
     val axisNormal = when (axis.position) {
         AxisPosition.Bottom,
         AxisPosition.Right -> Offset(-axisUnit.y, axisUnit.x)
+
         AxisPosition.Top,
         AxisPosition.Left -> Offset(axisUnit.y, -axisUnit.x)
     }

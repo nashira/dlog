@@ -13,6 +13,11 @@ class CreateAlogFromMap {
         val temp1 = map["temp1"] as? List<Double> ?: emptyList()
         val temp2 = map["temp2"] as? List<Double> ?: emptyList()
         val timeIndex = (map["timeindex"] as? List<Double> ?: emptyList()).map { it.toInt() }
+        val specialEvents = (map["specialevents"] as? List<Double> ?: emptyList()).map { it.toInt() }
+        val specialEventTypes = (map["specialeventstype"] as? List<Double> ?: emptyList()).map { it.toInt() }
+        val specialEventValues = map["specialeventsvalue"] as? List<Double> ?: emptyList()
+
+        val computed = map["computed"] as? Map<String, Any?> ?: emptyMap()
 
         return AlogDocument(
             title,
@@ -26,6 +31,10 @@ class CreateAlogFromMap {
             temp1,
             temp2,
             timeIndex,
+            specialEvents,
+            specialEventTypes,
+            specialEventValues,
+            (computed["TP_idx"] as? Double)?.toInt() ?: -1
         )
     }
 }

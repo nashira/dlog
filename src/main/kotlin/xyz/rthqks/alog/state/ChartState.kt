@@ -38,7 +38,9 @@ data class TimeSeries(
 }
 
 data class Annotation(
-    val text: String
+    val text: String,
+    val pos: Offset,
+    val bounds: Rect,
 )
 
 enum class AxisPosition {
