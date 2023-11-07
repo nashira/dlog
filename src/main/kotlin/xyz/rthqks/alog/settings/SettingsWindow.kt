@@ -3,6 +3,7 @@ package xyz.rthqks.alog.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.window.Window
 import xyz.rthqks.alog.app.state.SettingsWindowState
 import xyz.rthqks.alog.intent.ChangeSetting
@@ -20,11 +21,14 @@ fun SettingsWindow(
         onCloseRequest = { reducer(CloseWindow(state)) }
     ) {
         Column {
-            when (val setting = state.setting.value) {
-                is BooleanSetting ->
+            val settingState = state.setting.collectAsState()
+
+            when (val setting = settingState.value) {
+                is BooleanSetting -> {
                     Switch(setting.value, onCheckedChange = {
                         reducer(ChangeSetting(BooleanSetting(it)))
                     })
+                }
             }
         }
     }

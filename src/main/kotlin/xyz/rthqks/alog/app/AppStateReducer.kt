@@ -6,10 +6,7 @@ import org.koin.core.component.createScope
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
-import xyz.rthqks.alog.app.state.AppState
-import xyz.rthqks.alog.app.state.ChartWindowState
-import xyz.rthqks.alog.app.state.FilePickerWindowReducer
-import xyz.rthqks.alog.app.state.WindowState
+import xyz.rthqks.alog.app.state.*
 import xyz.rthqks.alog.chart.ChartWindowReducer
 import xyz.rthqks.alog.intent.*
 import xyz.rthqks.alog.logic.Reducer
@@ -25,15 +22,17 @@ class AppStateReducer(
     private val createAlogFromMap: CreateAlogFromMap,
     private val createChartStateFromAlog: CreateChartStateFromAlog,
 ) : Reducer<AppState>(), KoinScopeComponent {
-    override val scope: Scope by lazy { createScope() }
+    override val scope: Scope by lazy {
+        createScope().apply {
+            declare(this@AppStateReducer as Reducer<*>)
+        }
+    }
 
     private var exitBlock: (() -> Unit)? = null
 
     private val windowsFlow = mutableStateOf(
         listOf<Reducer<out WindowState>>(
-            // need to explicitly pass `parent` because
-            // this is parent and this being created
-            get<FilePickerWindowReducer> { parametersOf(this) }
+            get<FilePickerWindowReducer>()
         )
     )
 

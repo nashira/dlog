@@ -3,6 +3,7 @@
 package xyz.rthqks.alog.app.ui
 
 import androidx.compose.runtime.Composable
+import xyz.rthqks.alog.app.FilePickerWindowReducer
 import xyz.rthqks.alog.app.state.*
 import xyz.rthqks.alog.logic.Reducer
 import xyz.rthqks.alog.settings.SettingsWindowReducer
@@ -14,14 +15,14 @@ import xyz.rthqks.alog.chart.ChartWindowReducer
 fun App(
     reducer: Reducer<AppState>,
 ) {
-    val windows = reducer.state.windows.value
+    val reducers = reducer.state.windows.value
 
-    windows.forEach { window ->
-        when (window) {
-            is FilePickerWindowReducer -> FilePickerWindow(window)
-            is ChartWindowReducer -> ChartWindow(window)
+    reducers.forEach { windowStateReducer ->
+        when (windowStateReducer) {
+            is FilePickerWindowReducer -> FilePickerWindow(windowStateReducer)
+            is ChartWindowReducer -> ChartWindow(windowStateReducer)
             is SettingsWindowReducer -> {
-                SettingsWindow(window)
+                SettingsWindow(windowStateReducer)
             }
         }
     }

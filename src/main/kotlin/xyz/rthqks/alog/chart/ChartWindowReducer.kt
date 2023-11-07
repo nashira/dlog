@@ -9,7 +9,5 @@ class ChartWindowReducer(
     override val state: ChartWindowState
 ) : Reducer<ChartWindowState>(parent) {
 
-    override fun handleIntent(intent: Intent) {
-
-    }
+    override fun handleIntent(intent: Intent) { }
 }

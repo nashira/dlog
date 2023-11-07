@@ -63,34 +63,16 @@ class CreateChartStateFromAlog {
             ts += TimeSeries(bounds, ets, Color.Red, fgStroke)
             ts += TimeSeries(bounds, bts, Color.Blue, fgStroke)
 
-            axes += Axis(
-                25,
-                5,
-                5f,
-                bounds,
-                AxisPosition.Left
-            ) { "%.0f".format(it) }
-            axes += Axis(
-                25,
-                5,
-                5f,
-                bounds,
-                AxisPosition.Bottom
-            ) {
+            axes += Axis(25, 5, 5f, bounds, AxisPosition.Left) { "%.0f".format(it) }
+            axes += Axis(25, 5, 5f, bounds, AxisPosition.Bottom) {
                 it.toMinSec()
             }
-            axes += Axis(
-                25,
-                5,
-                5f,
-                dxBounds,
-                AxisPosition.Right
-            ) { "%.0f".format(it) }
+            axes += Axis(25, 5, 5f, dxBounds, AxisPosition.Right) { "%.0f".format(it) }
 
             annotations += doc.events.filterIndexed { i, e -> (i == 0 && e.index >= 0) || e.index > 0 }
                 .map {
                     val pos = bts[it.index]
-                    val text = "${it.name}\n${pos.x.toMinSec()}\n${"%.1f".format(pos.y)}"
+                    val text = "${it.name}\n${"%.1f".format(pos.y)}\n${pos.x.toMinSec()}"
                     Annotation(text, pos, bounds)
                 }
         }

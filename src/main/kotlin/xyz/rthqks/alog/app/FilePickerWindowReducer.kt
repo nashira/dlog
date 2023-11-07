@@ -1,5 +1,6 @@
-package xyz.rthqks.alog.app.state
+package xyz.rthqks.alog.app
 
+import xyz.rthqks.alog.app.state.FilePickerWindowState
 import xyz.rthqks.alog.intent.Intent
 import xyz.rthqks.alog.logic.Reducer
 

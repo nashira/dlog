@@ -1,8 +1,8 @@
 package xyz.rthqks.alog.app.state
 
-import androidx.compose.runtime.State
-import xyz.rthqks.alog.settings.Setting
+import kotlinx.coroutines.flow.StateFlow
 import xyz.rthqks.alog.chart.ChartState
+import xyz.rthqks.alog.settings.Setting
 
 sealed class WindowState {
     abstract val title: String
@@ -18,7 +18,7 @@ data class ChartWindowState(
 ) : WindowState()
 
 data class SettingsWindowState(
-    val setting: State<Setting>,
+    val setting: StateFlow<Setting>,
 ) : WindowState() {
     override val title: String = "Settings"
 }
