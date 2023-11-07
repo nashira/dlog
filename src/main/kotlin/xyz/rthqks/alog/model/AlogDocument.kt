@@ -25,7 +25,6 @@ data class AlogDocument(
         get() = timex.getOrNull(chargeIndex) ?: 0.0
 
     val events by lazy {
-        println(timeIndex)
         listOf(
             AlogEvent("Charge", timeIndex[INDEX_CHARGE]),
             AlogEvent("Turning Point", tpIndex),

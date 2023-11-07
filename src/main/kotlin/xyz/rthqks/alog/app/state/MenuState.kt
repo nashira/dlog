@@ -1,4 +1,4 @@
-package xyz.rthqks.alog.state
+package xyz.rthqks.alog.app.state
 
 import xyz.rthqks.alog.intent.Intent
 

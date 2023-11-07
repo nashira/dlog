@@ -1,4 +1,4 @@
-package xyz.rthqks.alog.ui
+package xyz.rthqks.alog.app.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.FrameWindowScope
@@ -9,7 +9,7 @@ import xyz.rthqks.alog.logic.Reducer
 
 @Composable
 fun FrameWindowScope.GlobalMenu(
-    reducer: Reducer
+    reducer: Reducer<*>
 ) {
 
     MenuBar {

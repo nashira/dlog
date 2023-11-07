@@ -1,4 +1,4 @@
-package xyz.rthqks.alog.state
+package xyz.rthqks.alog.chart
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 
 class ChartState(
-    val title: String,
     val axes: List<Axis>,
     val timeSeries: List<TimeSeries>,
     val annotations: List<Annotation>,

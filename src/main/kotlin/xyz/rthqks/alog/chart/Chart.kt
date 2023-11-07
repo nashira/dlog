@@ -1,4 +1,4 @@
-package xyz.rthqks.alog.ui
+package xyz.rthqks.alog.chart
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,17 +27,12 @@ import xyz.rthqks.alog.div
 import xyz.rthqks.alog.length
 import xyz.rthqks.alog.logic.Reducer
 import xyz.rthqks.alog.normalize
-import xyz.rthqks.alog.state.Axis
-import xyz.rthqks.alog.state.AxisPosition
-import xyz.rthqks.alog.state.ChartState
-import xyz.rthqks.alog.state.LineStyle
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Chart(
-    state: ChartState,
-    reducer: Reducer,
+    state: ChartState
 ) {
     val textMeasurer = rememberTextMeasurer()
 
@@ -56,8 +50,6 @@ fun Chart(
             .fillMaxSize()
     ) {
         inset(padding.value) {
-            println(size)
-
             state.axes.forEach {
                 drawAxis(it, textMeasurer, textStyle)
             }

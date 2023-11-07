@@ -1,4 +1,4 @@
-package xyz.rthqks.alog.model
+package xyz.rthqks.alog.settings
 
 data class Settings(
     val foo: Boolean

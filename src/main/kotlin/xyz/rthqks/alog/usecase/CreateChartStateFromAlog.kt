@@ -5,11 +5,11 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import xyz.rthqks.alog.chart.*
+import xyz.rthqks.alog.chart.Annotation
 import xyz.rthqks.alog.model.AlogDocument
 import xyz.rthqks.alog.model.AlogDocument.Companion.EVENT_AIR
 import xyz.rthqks.alog.model.AlogDocument.Companion.EVENT_BURNER
-import xyz.rthqks.alog.state.*
-import xyz.rthqks.alog.state.Annotation
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
@@ -30,10 +30,6 @@ class CreateChartStateFromAlog {
             val ets = doc.timex.mapIndexed { idx, d ->
                 Offset(d.toFloat() - doc.chargeTime.toFloat(), doc.temp1[idx].toFloat())
             }
-
-            println(doc.specialEvents)
-            println(doc.specialEventTypes)
-            println(doc.specialEventValues)
 
             val bounds = Rect(
                 bts.first().x - 30f,
@@ -67,11 +63,29 @@ class CreateChartStateFromAlog {
             ts += TimeSeries(bounds, ets, Color.Red, fgStroke)
             ts += TimeSeries(bounds, bts, Color.Blue, fgStroke)
 
-            axes += Axis(25, 5, 5f, bounds, AxisPosition.Left) { "%.0f".format(it) }
-            axes += Axis(25, 5, 5f, bounds, AxisPosition.Bottom) {
+            axes += Axis(
+                25,
+                5,
+                5f,
+                bounds,
+                AxisPosition.Left
+            ) { "%.0f".format(it) }
+            axes += Axis(
+                25,
+                5,
+                5f,
+                bounds,
+                AxisPosition.Bottom
+            ) {
                 it.toMinSec()
             }
-            axes += Axis(25, 5, 5f, dxBounds, AxisPosition.Right) { "%.0f".format(it) }
+            axes += Axis(
+                25,
+                5,
+                5f,
+                dxBounds,
+                AxisPosition.Right
+            ) { "%.0f".format(it) }
 
             annotations += doc.events.filterIndexed { i, e -> (i == 0 && e.index >= 0) || e.index > 0 }
                 .map {
@@ -81,7 +95,7 @@ class CreateChartStateFromAlog {
                 }
         }
 
-        return ChartState(doc.title, axes, ts, annotations)
+        return ChartState(axes, ts, annotations)
     }
 
     private fun getPathForEvents(

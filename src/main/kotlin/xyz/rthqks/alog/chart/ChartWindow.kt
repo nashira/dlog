@@ -1,25 +1,25 @@
-package xyz.rthqks.alog.ui
+package xyz.rthqks.alog.chart
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.Window
 import xyz.rthqks.alog.intent.CloseWindow
-import xyz.rthqks.alog.intent.ShowFileSelector
 import xyz.rthqks.alog.logic.Reducer
-import xyz.rthqks.alog.state.ChartWindowState
+import xyz.rthqks.alog.app.state.ChartWindowState
+import xyz.rthqks.alog.app.ui.GlobalMenu
 
 @Composable
 fun ChartWindow(
-    state: ChartWindowState,
-    reducer: Reducer
+    reducer: Reducer<ChartWindowState>
 ) {
+    val state = reducer.state
+
     Window(
-        title = state.chartState.title,
+        title = state.title,
         onCloseRequest = { reducer(CloseWindow(state)) }
     ) {
 
         GlobalMenu(reducer)
 
-        Chart(state.chartState, reducer)
+        Chart(state.chartState)
     }
 }
