@@ -2,8 +2,12 @@ package xyz.rthqks.alog.chart
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -25,15 +29,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.rthqks.alog.div
 import xyz.rthqks.alog.length
-import xyz.rthqks.alog.logic.Reducer
 import xyz.rthqks.alog.normalize
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Chart(
-    state: ChartState
+    state: ChartState,
+    clock: State<String>
 ) {
+
+    Column(Modifier.fillMaxSize()) {
+        Row {
+            Text(clock.value)
+        }
+
+        Row {
+            ChartCanvas(state)
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun ChartCanvas(state: ChartState) {
     val textMeasurer = rememberTextMeasurer()
 
     val textStyle = TextStyle(
@@ -49,6 +67,8 @@ fun Chart(
             }
             .fillMaxSize()
     ) {
+        if (size.width <= padding.value || size.height <= padding.value) return@Canvas
+
         inset(padding.value) {
             state.axes.forEach {
                 drawAxis(it, textMeasurer, textStyle)
@@ -150,18 +170,6 @@ private fun DrawScope.drawAxis(axis: Axis, textMeasurer: TextMeasurer, textStyle
     }
 }
 
-private operator fun Offset.minus(intOffset: IntOffset) = Offset(x - intOffset.x, y - intOffset.y)
-
-private fun Offset.dot(offset: Offset) = offset.x * x + offset.y * y
-
-private operator fun Matrix.times(offset: Offset) = map(offset)
-
-private fun Rect.fitTo(window: Size): Matrix = Matrix().apply {
-    val scale = window / size
-    translate(-left * scale.x, -top * scale.y)
-    scale(scale.x, scale.y)
-}
-
 private fun getLinearPath(data: List<Offset>): Path = Path().apply {
     data.forEachIndexed { i, it ->
         if (i == 0) {
@@ -192,4 +200,16 @@ private fun getCubicPath(
         val c2 = p2 - (t2 * l)
         cubicTo(c1.x, c1.y, c2.x, c2.y, p2.x, p2.y)
     }
+}
+
+private operator fun Offset.minus(intOffset: IntOffset) = Offset(x - intOffset.x, y - intOffset.y)
+
+private fun Offset.dot(offset: Offset) = offset.x * x + offset.y * y
+
+private operator fun Matrix.times(offset: Offset) = map(offset)
+
+private fun Rect.fitTo(window: Size): Matrix = Matrix().apply {
+    val scale = window / size
+    translate(-left * scale.x, -top * scale.y)
+    scale(scale.x, scale.y)
 }

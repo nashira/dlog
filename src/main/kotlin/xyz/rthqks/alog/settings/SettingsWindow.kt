@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.window.Window
 import xyz.rthqks.alog.app.state.SettingsWindowState
 import xyz.rthqks.alog.intent.ChangeSetting
@@ -15,9 +16,10 @@ fun SettingsWindow(
     reducer: Reducer<SettingsWindowState>
 ) {
     val state = reducer.state
+    val title by state.title
 
     Window(
-        title = state.title,
+        title = title,
         onCloseRequest = { reducer(CloseWindow(state)) }
     ) {
         Column {

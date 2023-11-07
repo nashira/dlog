@@ -1,7 +1,7 @@
 package xyz.rthqks.alog.intent
 
-import xyz.rthqks.alog.settings.Setting
 import xyz.rthqks.alog.app.state.WindowState
+import xyz.rthqks.alog.settings.Setting
 import java.io.File
 
 sealed class Intent {

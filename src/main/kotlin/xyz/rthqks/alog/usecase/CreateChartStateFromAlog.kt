@@ -10,6 +10,8 @@ import xyz.rthqks.alog.chart.Annotation
 import xyz.rthqks.alog.model.AlogDocument
 import xyz.rthqks.alog.model.AlogDocument.Companion.EVENT_AIR
 import xyz.rthqks.alog.model.AlogDocument.Companion.EVENT_BURNER
+import xyz.rthqks.alog.settings.BooleanSetting
+import xyz.rthqks.alog.settings.Setting
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
@@ -17,7 +19,7 @@ import kotlin.math.min
 
 class CreateChartStateFromAlog {
 
-    operator fun invoke(doc: AlogDocument): ChartState {
+    operator fun invoke(doc: AlogDocument, setting: Setting): ChartState {
         val ts = mutableListOf<TimeSeries>()
         val axes = mutableListOf<Axis>()
         val annotations = mutableListOf<Annotation>()
@@ -31,17 +33,29 @@ class CreateChartStateFromAlog {
                 Offset(d.toFloat() - doc.chargeTime.toFloat(), doc.temp1[idx].toFloat())
             }
 
+            val useAlogBounds = (setting as? BooleanSetting)?.value ?: false
+            val xMin = if (useAlogBounds) {
+                doc.xMin.toFloat()
+            } else {
+                bts.first().x - 30f
+            }
+            val xMax = if (useAlogBounds) {
+                doc.xMax.toFloat()
+            } else {
+                bts.last().x + 30f
+            }
+
             val bounds = Rect(
-                bts.first().x - 30f,
+                xMin,
                 doc.yMax.toFloat(),
-                bts.last().x + 30f,
+                xMax,
                 doc.yMin.toFloat()
             )
 
             val dxBounds = Rect(
-                bts.first().x - 30f,
+                xMin,
                 doc.zMax.toFloat(),
-                bts.last().x + 30f,
+                xMax,
                 doc.zMin.toFloat()
             )
 

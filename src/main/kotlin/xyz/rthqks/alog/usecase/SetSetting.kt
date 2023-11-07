@@ -1,6 +1,5 @@
 package xyz.rthqks.alog.usecase
 
-import kotlinx.coroutines.flow.StateFlow
 import xyz.rthqks.alog.settings.Setting
 import xyz.rthqks.alog.settings.SettingsRepo
 
