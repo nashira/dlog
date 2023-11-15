@@ -1,6 +1,7 @@
 package xyz.rthqks.alog.model
 
 data class AlogDocument(
+    val fileName: String,
     val title: String,
     val xMin: Double,
     val xMax: Double,

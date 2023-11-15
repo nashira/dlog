@@ -4,14 +4,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.flow.StateFlow
 import xyz.rthqks.alog.chart.ChartState
-import xyz.rthqks.alog.settings.Setting
+import xyz.rthqks.alog.settings.state.SettingsState
 
 sealed class WindowState {
     abstract val title: State<String>
 }
 
-data object FilePickerWindowState : WindowState() {
-    override val title = mutableStateOf("Select A File")
+data object FindFileWindowState : WindowState() {
+    override val title = mutableStateOf("Select a File to Open")
 }
 
 data class ChartWindowState(
@@ -21,7 +21,7 @@ data class ChartWindowState(
 ) : WindowState()
 
 data class SettingsWindowState(
-    val setting: StateFlow<Setting>,
+    val settings: StateFlow<SettingsState>,
 ) : WindowState() {
     override val title = mutableStateOf("Settings")
 }

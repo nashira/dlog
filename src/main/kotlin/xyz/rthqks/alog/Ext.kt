@@ -3,6 +3,7 @@ package xyz.rthqks.alog
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import kotlin.math.sqrt
+import kotlin.system.measureTimeMillis
 
 
 operator fun Offset.times(offset: Offset): Offset = Offset(x * offset.x, y * offset.y)
@@ -11,3 +12,10 @@ operator fun Size.div(size: Size): Offset = Offset(width / size.width, height / 
 
 fun Offset.normalize(): Offset = this / length()
 fun Offset.length(): Float = sqrt(x * x + y * y)
+
+fun <R> timeIt(label: String, block: () -> R) : R {
+    val r: R
+    val time = measureTimeMillis { r = block() }
+    println("$label: ${time}ms")
+    return r
+}

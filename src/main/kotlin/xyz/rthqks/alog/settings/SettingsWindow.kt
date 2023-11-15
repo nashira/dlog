@@ -1,14 +1,12 @@
 package xyz.rthqks.alog.settings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.window.Window
 import xyz.rthqks.alog.app.state.SettingsWindowState
-import xyz.rthqks.alog.intent.ChangeSetting
-import xyz.rthqks.alog.intent.CloseWindow
+import xyz.rthqks.alog.logic.CloseWindow
 import xyz.rthqks.alog.logic.Reducer
 
 @Composable
@@ -20,18 +18,20 @@ fun SettingsWindow(
 
     Window(
         title = title,
-        onCloseRequest = { reducer(CloseWindow(state)) }
+        onCloseRequest = reducer.bind(CloseWindow(state))
     ) {
+        val settings by state.settings.collectAsState()
         Column {
-            val settingState = state.setting.collectAsState()
 
-            when (val setting = settingState.value) {
-                is BooleanSetting -> {
-                    Switch(setting.value, onCheckedChange = {
-                        reducer(ChangeSetting(BooleanSetting(it)))
-                    })
-                }
-            }
+//
+//            when (val setting = settingState) {
+//                is BooleanSetting -> {
+//                    Switch(setting.value, onCheckedChange = {
+//                        reducer(ChangeSetting(BooleanSetting(it)))
+//                    })
+//                }
+//            }
         }
     }
 }
+

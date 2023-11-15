@@ -1,7 +1,6 @@
 package xyz.rthqks.alog.logic
 
 import org.koin.core.component.KoinComponent
-import xyz.rthqks.alog.intent.Intent
 
 abstract class Reducer<T>(
     private val parent: Reducer<*>? = null
@@ -12,6 +11,7 @@ abstract class Reducer<T>(
     protected abstract fun handleIntent(intent: Intent)
 
     operator fun invoke(intent: Intent) {
+        println("intent $intent")
         handleIntent(intent)
         parent?.handleIntent(intent)
     }

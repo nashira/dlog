@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.window.Window
 import xyz.rthqks.alog.app.state.ChartWindowState
 import xyz.rthqks.alog.app.ui.GlobalMenu
-import xyz.rthqks.alog.intent.CloseWindow
+import xyz.rthqks.alog.logic.CloseWindow
 import xyz.rthqks.alog.logic.Reducer
 
 @Composable
@@ -18,7 +18,7 @@ fun ChartWindow(
 
     Window(
         title = title,
-        onCloseRequest = { reducer(CloseWindow(state)) }
+        onCloseRequest = reducer.bind(CloseWindow(state))
     ) {
 
         GlobalMenu(reducer)
