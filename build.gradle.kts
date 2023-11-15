@@ -33,11 +33,11 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "xyz.rthqks.alog.MainKt"
+        mainClass = "xyz.rthqks.dlog.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "demo"
+            packageName = "dlog"
             packageVersion = "1.0.0"
         }
     }
@@ -46,7 +46,7 @@ compose.desktop {
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("xyz.rthqks.alog")
+            packageName.set("xyz.rthqks.dlog.db")
             generateAsync.set(true)
             srcDirs(listOf("src/main/sqldelight"))
         }
