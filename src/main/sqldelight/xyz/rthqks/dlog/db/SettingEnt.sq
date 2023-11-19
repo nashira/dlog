@@ -1,4 +1,4 @@
-CREATE TABLE Setting (
+CREATE TABLE SettingEnt (
     id INTEGER PRIMARY KEY NOT NULL,
     key TEXT NOT NULL,
     type TEXT NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE Setting (
 );
 
 selectAll:
-SELECT * FROM Setting;
+SELECT * FROM SettingEnt;
 
 insert:
-INSERT INTO Setting (key, type, json) VALUES ?;
+INSERT INTO SettingEnt (key, type, json) VALUES ?;

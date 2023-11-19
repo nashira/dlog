@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.flow
 class WebSocketReplay {
 
 
-
     operator fun invoke(alogDocument: AlogDocument): Flow<AlogDocument> = flow {
         alogDocument.timex.forEach {
 

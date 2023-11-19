@@ -4,13 +4,14 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import xyz.rthqks.alog.db.Setting
-import xyz.rthqks.alog.db.SettingQueries
+import xyz.rthqks.dlog.db.SettingEnt
+import xyz.rthqks.dlog.db.SettingEntQueries
 
 class SettingsRepo(
-    private val settingQueries: SettingQueries
+    private val settingQueries: SettingEntQueries
 ) {
     private val coroutineScope = CoroutineScope(Job())
     private val _settings = settingQueries.selectAll().asFlow().mapToList(coroutineScope.coroutineContext)
@@ -18,7 +19,7 @@ class SettingsRepo(
 
     fun set() {
         coroutineScope.launch {
-            settingQueries.insert(Setting(0, "", "", "{}"))
+            settingQueries.insert(SettingEnt(0, "", "", "{}"))
         }
     }
 }

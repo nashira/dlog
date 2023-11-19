@@ -48,7 +48,7 @@ sqldelight {
         create("Database") {
             packageName.set("xyz.rthqks.dlog.db")
             generateAsync.set(true)
-            srcDirs(listOf("src/main/sqldelight"))
+            srcDirs("src/main/sqldelight")
         }
     }
 }

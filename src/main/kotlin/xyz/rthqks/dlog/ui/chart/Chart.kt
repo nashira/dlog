@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -27,26 +25,21 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import xyz.rthqks.dlog.div
+import xyz.rthqks.dlog.length
+import xyz.rthqks.dlog.normalize
 import xyz.rthqks.dlog.state.Axis
 import xyz.rthqks.dlog.state.AxisPosition
 import xyz.rthqks.dlog.state.ChartState
 import xyz.rthqks.dlog.state.LineStyle
-import xyz.rthqks.dlog.div
-import xyz.rthqks.dlog.length
-import xyz.rthqks.dlog.normalize
 
 
 @Composable
 fun Chart(
     state: ChartState,
-    clock: State<String>
 ) {
 
     Column(Modifier.fillMaxSize()) {
-        Row {
-            Text(clock.value)
-        }
-
         Row {
             ChartCanvas(state)
         }

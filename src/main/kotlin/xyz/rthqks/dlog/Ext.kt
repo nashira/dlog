@@ -23,7 +23,7 @@ fun Float.toMinSec() = "%.0f:%02.0f".format(floor(this / 60f), abs(this % 60f))
 fun Offset.normalize(): Offset = this / length()
 fun Offset.length(): Float = sqrt(x * x + y * y)
 
-fun <R> timeIt(label: String, block: () -> R) : R {
+fun <R> timeIt(label: String, block: () -> R): R {
     val r: R
     val time = measureTimeMillis { r = block() }
     println("$label: ${time}ms")

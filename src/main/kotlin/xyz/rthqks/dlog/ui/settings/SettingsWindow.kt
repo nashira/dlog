@@ -2,25 +2,22 @@ package xyz.rthqks.dlog.ui.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.window.Window
-import xyz.rthqks.dlog.state.SettingsWindowState
-import xyz.rthqks.dlog.intent.CloseWindow
-import xyz.rthqks.dlog.viewmodel.Reducer
+import xyz.rthqks.dlog.viewmodel.SettingsViewModel
+import xyz.rthqks.dlog.viewmodel.TaskIntent
 
 @Composable
 fun SettingsWindow(
-    reducer: Reducer<SettingsWindowState>
+    vm: SettingsViewModel
 ) {
-    val state = reducer.state
-    val title by state.title
+    val title by vm.titleState
 
     Window(
         title = title,
-        onCloseRequest = reducer.bind(CloseWindow(state))
+        onCloseRequest = { vm.handle(TaskIntent.CloseWindow) }
     ) {
-        val settings by state.settings.collectAsState()
+//        val settings by state.settings.collectAsState()
         Column {
 
 //

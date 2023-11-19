@@ -2,20 +2,17 @@ package xyz.rthqks.dlog.ui.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.AwtWindow
-import xyz.rthqks.dlog.state.FindFileWindowState
-import xyz.rthqks.dlog.intent.CloseWindow
-import xyz.rthqks.dlog.viewmodel.Reducer
-import xyz.rthqks.dlog.intent.SelectFiles
+import xyz.rthqks.dlog.viewmodel.app.Menu
 import java.awt.FileDialog
 import java.awt.Frame
 
 @Composable
 fun FilePickerWindow(
-    reducer: Reducer<FindFileWindowState>
+    handler: (Menu) -> Unit = {},
 ) = AwtWindow<FileDialog>(
     create = {
-        val state = reducer.state
-        object : FileDialog(null as Frame?, state.title.value, LOAD) {
+
+        object : FileDialog(null as Frame?, "", LOAD) {
 
             init {
                 isMultipleMode = true
@@ -24,8 +21,7 @@ fun FilePickerWindow(
             override fun setVisible(value: Boolean) {
                 super.setVisible(value)
                 if (value) {
-                    reducer(CloseWindow(state))
-                    reducer(SelectFiles(files.toList()))
+                    handler(Menu.SelectFiles(files.toList()))
                 }
             }
         }

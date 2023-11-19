@@ -1,0 +1,16 @@
+
+CREATE TABLE TaskEnt (
+    id INTEGER PRIMARY KEY NOT NULL,
+    type TEXT NOT NULL,
+    fileName TEXT
+);
+
+
+getAll:
+SELECT * FROM TaskEnt;
+
+insert:
+INSERT INTO TaskEnt(type, fileName) VALUES ?;
+
+delete:
+DELETE FROM TaskEnt WHERE id = ?;
