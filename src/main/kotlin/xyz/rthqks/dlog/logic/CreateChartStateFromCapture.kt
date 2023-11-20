@@ -34,7 +34,7 @@ class CreateChartStateFromCapture {
             )
             ts += TimeSeries(
                 dxBounds,
-                ts.last().data.derivative(6, 6),
+                ts.last().data.derivative(6),
                 config.colors[t] ?: Color.Black,
             )
         }

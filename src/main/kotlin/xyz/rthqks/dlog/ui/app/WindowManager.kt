@@ -3,13 +3,9 @@ package xyz.rthqks.dlog.ui.app
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import org.koin.core.component.get
-import org.koin.core.parameter.parametersOf
 import xyz.rthqks.dlog.repo.Task
 import xyz.rthqks.dlog.ui.chart.ChartWindow
 import xyz.rthqks.dlog.ui.settings.SettingsWindow
-import xyz.rthqks.dlog.viewmodel.SettingsViewModel
 import xyz.rthqks.dlog.viewmodel.app.AppViewModel
 
 

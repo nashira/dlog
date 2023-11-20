@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinScopeComponent
-import org.koin.core.component.createScope
 import org.koin.core.component.getOrCreateScope
 import org.koin.core.scope.Scope
 import xyz.rthqks.dlog.db.TaskEnt
@@ -43,6 +42,7 @@ sealed class Task(
     val type: Type,
 ) {
     abstract val id: Long
+
     data class ViewAlogChart(override val id: Long, val fileName: String) : Task(Type.ViewAlogChart)
     data class EditSettings(override val id: Long) : Task(Type.EditSettings)
 
@@ -52,6 +52,6 @@ sealed class Task(
     }
 }
 
-data class TaskScope(val task: Task): KoinScopeComponent {
+data class TaskScope(val task: Task) : KoinScopeComponent {
     override val scope: Scope by getOrCreateScope()
 }

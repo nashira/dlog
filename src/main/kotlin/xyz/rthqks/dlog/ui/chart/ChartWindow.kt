@@ -7,17 +7,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import xyz.rthqks.dlog.viewmodel.ChartViewModel
-import xyz.rthqks.dlog.viewmodel.TaskIntent
 import java.awt.Toolkit
-import java.awt.event.WindowStateListener
 
 @Composable
 fun ChartWindow(
-    vm: ChartViewModel
+    vm: ChartViewModel,
 ) {
     val title by vm.titleState
     val chart by vm.replayState.collectAsState()
-    val handler = vm::handle
 
     val screenSize = Toolkit.getDefaultToolkit().screenSize
 
@@ -27,7 +24,7 @@ fun ChartWindow(
             width = screenSize.width.dp,
             height = screenSize.height.dp,
         ),
-        onCloseRequest = { handler(TaskIntent.CloseWindow) },
+        onCloseRequest = vm::onWindowClose,
     ) {
 //        GlobalMenu(reducer) {
 //            Menu("Chart") {

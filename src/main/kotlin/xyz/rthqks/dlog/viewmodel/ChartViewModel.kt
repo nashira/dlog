@@ -20,9 +20,8 @@ class ChartViewModel(
     private val createChartStateFromAlog: CreateChartStateFromAlog,
     private val alogReplayClient: AlogReplayClient,
     private val createChartStateFromCapture: CreateChartStateFromCapture,
-    private val deleteTask: DeleteTask,
+    private val windowClose: () -> Unit
 ) : ViewModel() {
-
     val replayState = alogReplayClient(task.fileName)
         .map(createChartStateFromCapture::invoke)
         .stateIn(
@@ -53,10 +52,8 @@ class ChartViewModel(
         }
     }
 
-    fun handle(intent: TaskIntent) = when (intent) {
-        TaskIntent.CloseWindow -> coroutineScope.launch {
-            deleteTask(task.id)
-            close()
-        }
+    fun onWindowClose() {
+        close()
+        windowClose()
     }
 }
