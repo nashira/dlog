@@ -10,10 +10,10 @@ operator fun Offset.times(offset: Offset): Offset = Offset(x * offset.x, y * off
 operator fun Offset.div(offset: Offset): Offset = Offset(x / offset.x, y / offset.y)
 operator fun Size.div(size: Size): Offset = Offset(width / size.width, height / size.height)
 
-fun List<Offset>.derivative(delta: Int = 1): List<Offset> = mapIndexed { index, offset ->
-    val prev = get(max(index - delta, 0))
-    val next = get(min(index + delta, lastIndex))
-    val dx = (next.x - prev.x)
+fun List<Offset>.derivative(deltaMinus: Int = 1, deltaPlus: Int = deltaMinus): List<Offset> = mapIndexed { index, offset ->
+    val prev = get(max(index - deltaMinus, 0))
+    val next = get(min(index + deltaPlus, lastIndex))
+    val dx = if (next.x - prev.x > 0) next.x - prev.x else 1f
     // deg/Min
     Offset(offset.x, 60f * (next.y - prev.y) / dx)
 }
