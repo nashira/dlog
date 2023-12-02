@@ -21,22 +21,35 @@ class CreateChartStateFromCapture {
             mapOf(
                 "bt" to Color.Blue,
                 "et" to Color.Red,
+                "event-0" to Color(0xff88ffff),
+                "event-3" to Color(0xffff88ff),
             )
         )
+        val startX = data.timeSeries["bt"]?.firstOrNull()?.time?.toFloat() ?: 0f
+        val endX = data.timeSeries["bt"]?.lastOrNull()?.time?.toFloat() ?: 0f
 
         val bounds = data.timeSeries["bt"]?.getBounds() ?: Rect(0f, 1f, 1f, 0f)
         val dxBounds = Rect(bounds.left, 25f, bounds.right, 0f)
-        data.timeSeries.forEach { t, u ->
-            ts += TimeSeries(
-                bounds,
-                u.map { Offset(it.time.toFloat(), it.value.toFloat()) },
-                config.colors[t] ?: Color.Black,
-            )
-            ts += TimeSeries(
-                dxBounds,
-                ts.last().data.derivative(6),
-                config.colors[t] ?: Color.Black,
-            )
+        data.timeSeries.forEach { (t, u) ->
+            val offsets = u.map { Offset(it.time.toFloat(), it.value.toFloat()) }
+            if (t in setOf("bt", "et")) {
+                ts += TimeSeries(
+                    bounds,
+                    offsets,
+                    config.colors[t] ?: Color.Black,
+                )
+                ts += TimeSeries(
+                    dxBounds,
+                    offsets.derivative(listOf(1f, 2f, 4f)),
+                    config.colors[t] ?: Color.Black,
+                )
+            } else if (t in setOf("event-0", "event-3")) {
+                ts += TimeSeries(
+                    bounds,
+                    offsets.manhattan(startX, endX),
+                    config.colors[t] ?: Color.Black,
+                )
+            }
         }
 
         axes += Axis(
@@ -62,41 +75,35 @@ class CreateChartStateFromCapture {
             dxBounds,
             AxisPosition.Right
         ) { "%.0f".format(it) }
-//
-//            annotations += doc.events.filterIndexed { i, e -> (i == 0 && e.index >= 0) || e.index > 0 }
-//                .map {
-//                    val pos = bts[it.index]
-//                    val text = "${it.name}\n${"%.1f".format(pos.y)}\n${pos.x.toMinSec()}"
-//                    Annotation(text, pos, bounds)
-//                }
-        return ChartState(axes, ts, annotations)
-    }
 
-    private fun getPathForEvents(
-        eventsByType: Map<Int, List<Triple<Int, Float, Float>>>,
-        bts: List<Offset>,
-        type: Int,
-    ): MutableList<Offset> {
-        val burner = mutableListOf<Offset>()
-        eventsByType[type]?.let {
-            burner += Offset(0f, it[0].third)
-            it.windowed(2, partialWindows = true).forEach { w ->
-                if (w.size == 1) {
-                    burner += Offset(w[0].second, w[0].third)
-                } else {
-                    burner += Offset(w[1].second, w[0].third)
-                    burner += Offset(w[1].second, w[1].third)
-                }
-            }
-            burner += Offset(bts.last().x, it.last().third)
+        annotations += data.annotations.map {
+            Annotation(it.note, Offset(it.time.toFloat(), 0f), bounds)
         }
-        return burner
+        return ChartState(axes, ts, annotations)
     }
 }
 
 data class Config(
     val colors: Map<String, Color>
 )
+
+
+private fun List<Offset>.manhattan(startX: Float, endX: Float): List<Offset> {
+    val list = mutableListOf<Offset>()
+    if (isEmpty()) return emptyList()
+
+    list += Offset(startX, first().y)
+    windowed(2, partialWindows = true).forEach { w ->
+        if (w.size == 1) {
+            list += Offset(w[0].x, w[0].y)
+        } else {
+            list += Offset(w[1].x, w[0].y)
+            list += Offset(w[1].x, w[1].y)
+        }
+    }
+    list += Offset(endX, last().y)
+    return list
+}
 
 private fun List<DataPoint>.getBounds(): Rect {
     var xMin = Double.MAX_VALUE
@@ -108,5 +115,5 @@ private fun List<DataPoint>.getBounds(): Rect {
     if (xMax - xMin < 480) xMax = xMin + 480
 //    var yMin = Double.MAX_VALUE
 //    var yMax = Double.MIN_VALUE
-    return Rect(xMin.toFloat(), 250f, xMax.toFloat(), 0f)
+    return Rect(xMin.toFloat() - 30f, 250f, xMax.toFloat() + 30f, 0f)
 }

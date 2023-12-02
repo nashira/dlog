@@ -48,8 +48,8 @@ class CreateChartStateFromAlog {
             val air = getPathForEvents(eventsByType, bts, AlogDocument.EVENT_AIR)
             val burner = getPathForEvents(eventsByType, bts, AlogDocument.EVENT_BURNER)
 
-            ts += TimeSeries(dxBounds, ets.derivative(6), Color(0xffff8888))
-            ts += TimeSeries(dxBounds, bts.derivative(6), Color(0xff8888ff))
+            ts += TimeSeries(dxBounds, ets.derivative(listOf(0f,0f,0f,0f,0f,1f)), Color(0xffff8888))
+            ts += TimeSeries(dxBounds, bts.derivative(listOf(0f,0f,0f,0f,0f,1f)), Color(0xff8888ff))
             ts += TimeSeries(bounds, air, Color(0xff88ffff), fgStroke)
             ts += TimeSeries(bounds, burner, Color(0xffff88ff), fgStroke)
             ts += TimeSeries(bounds, ets, Color.Red, fgStroke)

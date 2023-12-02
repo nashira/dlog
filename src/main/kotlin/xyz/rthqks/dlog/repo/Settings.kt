@@ -6,7 +6,7 @@ class Settings(
     operator fun <T> set(key: Key<T>, value: T) {
         this[key] = value
     }
-//
+
 //    @Suppress("UNCHECKED_CAST")
 //    operator fun <T> get(key: Key<T>): T = this[key] as T
 }

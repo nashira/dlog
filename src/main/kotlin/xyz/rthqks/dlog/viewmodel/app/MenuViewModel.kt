@@ -5,6 +5,9 @@ import kotlinx.coroutines.launch
 import xyz.rthqks.dlog.intent.Intent
 import xyz.rthqks.dlog.logic.task.CreateTask
 import xyz.rthqks.dlog.repo.Task
+import xyz.rthqks.dlog.repo.Task.Type
+import xyz.rthqks.dlog.repo.Task.Type.ReplayAlogChart
+import xyz.rthqks.dlog.repo.Task.Type.ViewAlogChart
 import xyz.rthqks.dlog.viewmodel.ViewModel
 import java.io.File
 
@@ -25,13 +28,31 @@ class MenuViewModel(
 
             is Menu.SelectFiles -> {
                 filePicker.value = false
-                coroutineScope.launch {
-                    createTask(Task.ViewAlogChart(-1, menuIntent.files.first().absolutePath))
-                }
+                createFileOpenTask(menuIntent)
             }
 
             is Menu.SettingsEdit -> coroutineScope.launch {
-                createTask(Task.EditSettings(-1))
+                createTask(Task(-1, Type.EditSettings))
+            }
+        }
+    }
+
+    private fun createFileOpenTask(menuIntent: Menu.SelectFiles) {
+        coroutineScope.launch {
+            when (filePickerIntent) {
+                is Menu.FileOpen -> {
+                    menuIntent.files.forEach {
+                        createTask(Task(-1, ViewAlogChart, it.absolutePath))
+                    }
+                }
+
+                is Menu.FileReplay -> {
+                    menuIntent.files.forEach {
+                        createTask(Task(-1, ReplayAlogChart, it.absolutePath))
+                    }
+                }
+
+                else -> {}
             }
         }
     }

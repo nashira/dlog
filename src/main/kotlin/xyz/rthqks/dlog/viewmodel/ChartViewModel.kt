@@ -1,36 +1,22 @@
 package xyz.rthqks.dlog.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import xyz.rthqks.dlog.io.AlogReplayClient
-import xyz.rthqks.dlog.logic.*
-import xyz.rthqks.dlog.logic.task.DeleteTask
+import xyz.rthqks.dlog.logic.CreateAlogFromMap
+import xyz.rthqks.dlog.logic.CreateChartStateFromAlog
+import xyz.rthqks.dlog.logic.GetFileContent
+import xyz.rthqks.dlog.logic.ParsePythonLiteral
 import xyz.rthqks.dlog.repo.Task
 import xyz.rthqks.dlog.state.ChartState
 import java.io.File
 
 class ChartViewModel(
-    private val task: Task.ViewAlogChart,
+    private val task: Task,
     private val getFileContent: GetFileContent,
     private val parsePythonLiteral: ParsePythonLiteral,
     private val createAlogFromMap: CreateAlogFromMap,
     private val createChartStateFromAlog: CreateChartStateFromAlog,
-    private val alogReplayClient: AlogReplayClient,
-    private val createChartStateFromCapture: CreateChartStateFromCapture,
     private val windowClose: () -> Unit
 ) : ViewModel() {
-    val replayState = alogReplayClient(task.fileName)
-        .map(createChartStateFromCapture::invoke)
-        .stateIn(
-            coroutineScope, SharingStarted.Lazily, ChartState(
-                emptyList(),
-                emptyList(),
-                emptyList()
-            )
-        )
 
     val titleState = mutableStateOf("")
     val chartState = mutableStateOf(

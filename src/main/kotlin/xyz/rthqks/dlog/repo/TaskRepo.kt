@@ -15,8 +15,7 @@ class TaskRepo(
     private val taskQueries: TaskEntQueries
 ) {
     suspend fun create(task: Task) {
-        val fileName = (task as? Task.ViewAlogChart)?.fileName
-        taskQueries.insert(TaskEnt(-1, task.type.name, fileName))
+        taskQueries.insert(TaskEnt(-1, task.type.name, task.fileName))
     }
 
     suspend fun delete(id: Long) {
@@ -29,8 +28,10 @@ class TaskRepo(
         .map { list ->
             list.map {
                 when (it.type) {
-                    Task.Type.ViewAlogChart.name -> Task.ViewAlogChart(it.id, it.fileName ?: "")
-                    Task.Type.EditSettings.name -> Task.EditSettings(it.id)
+                    Task.Type.ViewAlogChart.name -> Task(it.id, Task.Type.ViewAlogChart, it.fileName)
+                    Task.Type.EditSettings.name -> Task(it.id, Task.Type.EditSettings)
+                    Task.Type.ReplayAlogChart.name -> Task(it.id, Task.Type.ReplayAlogChart, it.fileName)
+                    Task.Type.ReplaySettings.name -> Task(it.id, Task.Type.EditSettings)
                     else -> error("unknown type $it")
                 }
             }
@@ -38,17 +39,16 @@ class TaskRepo(
 
 }
 
-sealed class Task(
+data class Task(
+    val id: Long,
     val type: Type,
+    val fileName: String? = null,
 ) {
-    abstract val id: Long
-
-    data class ViewAlogChart(override val id: Long, val fileName: String) : Task(Type.ViewAlogChart)
-    data class EditSettings(override val id: Long) : Task(Type.EditSettings)
-
     sealed class Type(val name: String) {
         data object EditSettings : Type("edit_settings")
         data object ViewAlogChart : Type("view_alog_chart")
+        data object ReplayAlogChart : Type("replay_alog_chart")
+        data object ReplaySettings : Type("replay_alog_chart_settings")
     }
 }
 

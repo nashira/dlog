@@ -14,6 +14,8 @@ import xyz.rthqks.dlog.logic.task.GetTasks
 import xyz.rthqks.dlog.repo.SettingsRepo
 import xyz.rthqks.dlog.repo.TaskRepo
 import xyz.rthqks.dlog.repo.TaskScope
+import xyz.rthqks.dlog.ui.chart.ChartReplayWindow
+import xyz.rthqks.dlog.viewmodel.ChartReplayViewModel
 import xyz.rthqks.dlog.viewmodel.ChartViewModel
 import xyz.rthqks.dlog.viewmodel.SettingsViewModel
 import xyz.rthqks.dlog.viewmodel.app.AppViewModel
@@ -40,6 +42,7 @@ fun appModule() = module {
     scope<TaskScope> {
         scopedOf(::SettingsViewModel)
         scopedOf(::ChartViewModel)
+        scopedOf(::ChartReplayViewModel)
     }
 }
 
