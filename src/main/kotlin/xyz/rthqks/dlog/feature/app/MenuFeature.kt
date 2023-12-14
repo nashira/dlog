@@ -1,4 +1,4 @@
-package xyz.rthqks.dlog.viewmodel.app
+package xyz.rthqks.dlog.feature.app
 
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.launch
@@ -8,12 +8,12 @@ import xyz.rthqks.dlog.repo.Task
 import xyz.rthqks.dlog.repo.Task.Type
 import xyz.rthqks.dlog.repo.Task.Type.ReplayAlogChart
 import xyz.rthqks.dlog.repo.Task.Type.ViewAlogChart
-import xyz.rthqks.dlog.viewmodel.ViewModel
+import xyz.rthqks.dlog.feature.Feature
 import java.io.File
 
-class MenuViewModel(
+class MenuFeature(
     private val createTask: CreateTask
-) : ViewModel() {
+) : Feature() {
     val filePicker = mutableStateOf(false)
     private var filePickerIntent: Menu? = null
 
@@ -33,6 +33,10 @@ class MenuViewModel(
 
             is Menu.SettingsEdit -> coroutineScope.launch {
                 createTask(Task(-1, Type.EditSettings))
+            }
+
+            Menu.DataCaptureNew -> coroutineScope.launch {
+                createTask(Task(-1, Type.DataCapture, "ws://10.0.0.174/"))
             }
         }
     }
@@ -63,4 +67,5 @@ sealed class Menu : Intent {
     data object FileOpen : Menu()
     data object FileReplay : Menu()
     data object SettingsEdit : Menu()
+    data object DataCaptureNew: Menu()
 }

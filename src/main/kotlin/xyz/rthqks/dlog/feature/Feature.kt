@@ -1,10 +1,10 @@
-package xyz.rthqks.dlog.viewmodel
+package xyz.rthqks.dlog.feature
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 
-abstract class ViewModel {
+abstract class Feature {
     val coroutineScope = CoroutineScope(Job())
 //    override val scope: Scope by lazy { createScope().apply { declare(this) } }
 

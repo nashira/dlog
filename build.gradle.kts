@@ -15,8 +15,13 @@ repositories {
     google()
 }
 
+
+val ktor_version: String by project
+
 dependencies {
     implementation(compose.desktop.currentOs)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
     implementation("io.insert-koin:koin-core:3.5.0")
     implementation("io.insert-koin:koin-core-coroutines:3.5.0")
@@ -25,6 +30,11 @@ dependencies {
 
     implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
     implementation("app.cash.sqldelight:coroutines-extensions:2.0.0")
+
+
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-websockets:$ktor_version")
 }
 
 kotlin {

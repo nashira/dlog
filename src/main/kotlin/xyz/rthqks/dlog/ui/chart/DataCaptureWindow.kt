@@ -1,5 +1,9 @@
 package xyz.rthqks.dlog.ui.chart
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -8,31 +12,35 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import xyz.rthqks.dlog.ui.app.GlobalMenu
 import xyz.rthqks.dlog.feature.ChartReplayFeature
+import xyz.rthqks.dlog.feature.DataCaptureFeature
+import xyz.rthqks.dlog.feature.OpenDataCapture
 import java.awt.Toolkit
 
 @Composable
-fun ChartReplayWindow(
-    vm: ChartReplayFeature,
+fun DataCaptureWindow(
+    vm: DataCaptureFeature,
 ) {
     val title by vm.titleState
-    val chart by vm.replayState.collectAsState()
+    val chart by vm.chartState
 
     val screenSize = Toolkit.getDefaultToolkit().screenSize
 
     Window(
         title = title,
-        state = rememberWindowState(
-            width = screenSize.width.dp,
-            height = screenSize.height.dp,
-        ),
+        state = rememberWindowState(),
         onCloseRequest = vm::onWindowClose,
     ) {
-        GlobalMenu() {
-            Menu("Settings") {
-                Item("Some Item", onClick = vm::onSettingsOpen)
+        GlobalMenu()
+
+        Column {
+            Row {
+                Button({vm.handle(OpenDataCapture)}) {
+                    Text("Open")
+                }
+            }
+            Row {
+                Chart(chart)
             }
         }
-
-        Chart(chart)
     }
 }

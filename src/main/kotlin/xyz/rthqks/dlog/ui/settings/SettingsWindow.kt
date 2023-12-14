@@ -3,11 +3,11 @@ package xyz.rthqks.dlog.ui.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
-import xyz.rthqks.dlog.viewmodel.SettingsViewModel
+import xyz.rthqks.dlog.feature.SettingsFeature
 
 @Composable
 fun SettingsWindow(
-    vm: SettingsViewModel
+    vm: SettingsFeature
 ) {
 
     Window(

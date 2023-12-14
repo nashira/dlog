@@ -1,11 +1,11 @@
-package xyz.rthqks.dlog.viewmodel
+package xyz.rthqks.dlog.feature
 
 import xyz.rthqks.dlog.repo.Task
 
-class SettingsViewModel(
+class SettingsFeature(
     private val task: Task,
     private val windowClose: () -> Unit,
-) : ViewModel() {
+) : Feature() {
 
     fun onWindowClose() {
         close()

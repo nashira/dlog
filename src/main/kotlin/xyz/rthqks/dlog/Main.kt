@@ -12,7 +12,7 @@ import xyz.rthqks.dlog.di.logicModule
 import xyz.rthqks.dlog.ui.app.FilePickerWindow
 import xyz.rthqks.dlog.ui.app.TrayMenu
 import xyz.rthqks.dlog.ui.app.WindowManager
-import xyz.rthqks.dlog.viewmodel.app.MenuViewModel
+import xyz.rthqks.dlog.feature.app.MenuFeature
 
 fun main() {
     val koin = startKoin {
@@ -27,7 +27,7 @@ fun main() {
         Tray(
             icon = ColorPainter(Color.LightGray)
         ) {
-            val vm: MenuViewModel = koin.get()
+            val vm: MenuFeature = koin.get()
             val showPicker by vm.filePicker
             TrayMenu(vm::handle)
             if (showPicker) {

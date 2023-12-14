@@ -14,12 +14,15 @@ import xyz.rthqks.dlog.logic.task.GetTasks
 import xyz.rthqks.dlog.repo.SettingsRepo
 import xyz.rthqks.dlog.repo.TaskRepo
 import xyz.rthqks.dlog.repo.TaskScope
-import xyz.rthqks.dlog.ui.chart.ChartReplayWindow
-import xyz.rthqks.dlog.viewmodel.ChartReplayViewModel
-import xyz.rthqks.dlog.viewmodel.ChartViewModel
-import xyz.rthqks.dlog.viewmodel.SettingsViewModel
-import xyz.rthqks.dlog.viewmodel.app.AppViewModel
-import xyz.rthqks.dlog.viewmodel.app.MenuViewModel
+import xyz.rthqks.dlog.feature.ChartReplayFeature
+import xyz.rthqks.dlog.feature.ChartFeature
+import xyz.rthqks.dlog.feature.DataCaptureFeature
+import xyz.rthqks.dlog.feature.SettingsFeature
+import xyz.rthqks.dlog.feature.app.AppFeature
+import xyz.rthqks.dlog.feature.app.MenuFeature
+import xyz.rthqks.dlog.io.DataCaptureService
+import xyz.rthqks.dlog.io.websocket.WebsocketClient
+import xyz.rthqks.dlog.logic.capture.OpenDataCapture
 
 fun appModule() = module {
     singleOf(::CreateChartStateFromAlog)
@@ -33,16 +36,19 @@ fun appModule() = module {
 
     singleOf(::SettingsRepo)
     singleOf(::TaskRepo)
+    singleOf(::DataCaptureService)
 
-    singleOf(::AppViewModel)
-    singleOf(::MenuViewModel)
+    singleOf(::AppFeature)
+    singleOf(::MenuFeature)
 
     factoryOf(::TaskScope)
+    factoryOf(::WebsocketClient)
 
     scope<TaskScope> {
-        scopedOf(::SettingsViewModel)
-        scopedOf(::ChartViewModel)
-        scopedOf(::ChartReplayViewModel)
+        scopedOf(::SettingsFeature)
+        scopedOf(::ChartFeature)
+        scopedOf(::ChartReplayFeature)
+        scopedOf(::DataCaptureFeature)
     }
 }
 
@@ -50,6 +56,7 @@ fun logicModule() = module {
     singleOf(::GetTasks)
     singleOf(::CreateTask)
     singleOf(::DeleteTask)
+    singleOf(::OpenDataCapture)
 }
 
 fun dbModule() = module {

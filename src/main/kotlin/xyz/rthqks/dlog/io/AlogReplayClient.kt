@@ -2,18 +2,23 @@ package xyz.rthqks.dlog.io
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.Clock
 import xyz.rthqks.dlog.logic.CreateAlogFromMap
 import xyz.rthqks.dlog.logic.GetFileContent
 import xyz.rthqks.dlog.logic.ParsePythonLiteral
 import xyz.rthqks.dlog.toMinSec
 import java.io.File
-import java.time.Instant
 
 class AlogReplayClient(
     private val getFileContent: GetFileContent,
     private val parsePythonLiteral: ParsePythonLiteral,
     private val createAlogFromMap: CreateAlogFromMap,
-) {
+//    private val getAlogToDataCaptureSettings: GetAlogToDataCaptureSettings,
+) : DataCaptureClient {
+
+    override suspend fun open() {
+
+    }
 
     operator fun invoke(fileName: String) = flow {
         val file = File(fileName)
@@ -30,7 +35,7 @@ class AlogReplayClient(
         val ts = mutableMapOf<String, MutableList<DataPoint>>()
         val ns = mutableListOf<Annotation>()
         val start = alog.timex.firstOrNull() ?: 0.0
-        val startOff = Instant.now().toEpochMilli()
+        val startOff = Clock.System.now().toEpochMilliseconds()
 
         ns += alog.events.filterIndexed { i, e -> (i == 0 && e.index >= 0) || e.index > 0 }
             .map {
@@ -41,7 +46,7 @@ class AlogReplayClient(
             }
 
         alog.timex.forEachIndexed { index, d ->
-            val elapsed = Instant.now().toEpochMilli() - startOff
+            val elapsed = Clock.System.now().toEpochMilliseconds() - startOff
             delay(((d - start) * 10).toLong() - elapsed)
 
             ts.getOrPut("bt") { mutableListOf() } += DataPoint(d, alog.temp2[index])

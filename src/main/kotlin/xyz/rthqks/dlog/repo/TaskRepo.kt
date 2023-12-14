@@ -32,6 +32,7 @@ class TaskRepo(
                     Task.Type.EditSettings.name -> Task(it.id, Task.Type.EditSettings)
                     Task.Type.ReplayAlogChart.name -> Task(it.id, Task.Type.ReplayAlogChart, it.fileName)
                     Task.Type.ReplaySettings.name -> Task(it.id, Task.Type.EditSettings)
+                    Task.Type.DataCapture.name -> Task(it.id, Task.Type.DataCapture, it.fileName)
                     else -> error("unknown type $it")
                 }
             }
@@ -49,6 +50,7 @@ data class Task(
         data object ViewAlogChart : Type("view_alog_chart")
         data object ReplayAlogChart : Type("replay_alog_chart")
         data object ReplaySettings : Type("replay_alog_chart_settings")
+        data object DataCapture: Type("data_capture")
     }
 }
 

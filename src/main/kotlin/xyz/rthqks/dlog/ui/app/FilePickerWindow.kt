@@ -2,7 +2,7 @@ package xyz.rthqks.dlog.ui.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.AwtWindow
-import xyz.rthqks.dlog.viewmodel.app.Menu
+import xyz.rthqks.dlog.feature.app.Menu
 import java.awt.FileDialog
 import java.awt.Frame
 

@@ -1,4 +1,4 @@
-package xyz.rthqks.dlog.viewmodel
+package xyz.rthqks.dlog.feature
 
 import androidx.compose.runtime.mutableStateOf
 import xyz.rthqks.dlog.logic.CreateAlogFromMap
@@ -9,14 +9,14 @@ import xyz.rthqks.dlog.repo.Task
 import xyz.rthqks.dlog.state.ChartState
 import java.io.File
 
-class ChartViewModel(
+class ChartFeature(
     private val task: Task,
     private val getFileContent: GetFileContent,
     private val parsePythonLiteral: ParsePythonLiteral,
     private val createAlogFromMap: CreateAlogFromMap,
     private val createChartStateFromAlog: CreateChartStateFromAlog,
     private val windowClose: () -> Unit
-) : ViewModel() {
+) : Feature() {
 
     val titleState = mutableStateOf("")
     val chartState = mutableStateOf(

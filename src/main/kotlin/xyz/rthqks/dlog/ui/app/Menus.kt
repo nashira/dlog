@@ -5,7 +5,7 @@ import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
 import androidx.compose.ui.window.MenuScope
-import xyz.rthqks.dlog.viewmodel.app.Menu
+import xyz.rthqks.dlog.feature.app.Menu
 
 @Composable
 fun FrameWindowScope.GlobalMenu(
@@ -13,6 +13,12 @@ fun FrameWindowScope.GlobalMenu(
     content: @Composable MenuBarScope.() -> Unit = {}
 ) {
     MenuBar {
+        Menu(text = "Data Capture") {
+            Item(
+                "New",
+                onClick = { handler(Menu.DataCaptureNew) }
+            )
+        }
         Menu(text = "File") {
             Item(
                 "Open",
@@ -38,7 +44,12 @@ fun MenuScope.TrayMenu(
     handler: (Menu) -> Unit = {},
     content: MenuScope.() -> Unit = {}
 ) {
-
+    Menu(text = "Data Capture") {
+        Item(
+            "New",
+            onClick = { handler(Menu.DataCaptureNew) }
+        )
+    }
     Menu(text = "File") {
         Item(
             "Open",
