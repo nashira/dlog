@@ -38,12 +38,7 @@ import xyz.rthqks.dlog.state.LineStyle
 fun Chart(
     state: ChartState,
 ) {
-
-    Column(Modifier.fillMaxSize()) {
-        Row {
-            ChartCanvas(state)
-        }
-    }
+    ChartCanvas(state)
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

@@ -30,7 +30,7 @@ class ChartReplayFeature(
     val titleState = mutableStateOf(task.fileName ?: "")
 
     fun onWindowClose() {
-        close()
+        stop()
         windowClose()
     }
 

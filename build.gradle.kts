@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization") version "1.9.21"
     id("org.jetbrains.compose")
     id("app.cash.sqldelight") version "2.0.0"
 }
@@ -22,6 +23,8 @@ dependencies {
     implementation(compose.desktop.currentOs)
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     implementation("io.insert-koin:koin-core:3.5.0")
     implementation("io.insert-koin:koin-core-coroutines:3.5.0")

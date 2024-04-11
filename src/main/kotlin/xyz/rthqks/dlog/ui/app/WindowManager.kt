@@ -13,17 +13,17 @@ import xyz.rthqks.dlog.ui.chart.DataCaptureWindow
 
 
 @Composable
-fun WindowManager(vm: AppFeature) {
-    val taskStates by vm.tasks.collectAsState()
+fun WindowManager(app: AppFeature) {
+    val taskStates by app.tasks.collectAsState()
     taskStates.forEach { state ->
         val task = state.task
         key(task) {
             when (task.type) {
-                is Task.Type.EditSettings -> SettingsWindow(vm.getVm(task))
-                is Task.Type.ViewAlogChart -> ChartWindow(vm.getVm(task))
-                is Task.Type.ReplayAlogChart -> ChartReplayWindow((vm.getVm(task)))
-                is Task.Type.ReplaySettings -> SettingsWindow(vm.getVm(task))
-                is Task.Type.DataCapture -> DataCaptureWindow((vm.getVm(task)))
+                is Task.Type.EditSettings -> SettingsWindow(app.getFeature(task))
+                is Task.Type.ViewAlogChart -> ChartWindow(app.getFeature(task))
+                is Task.Type.ReplayAlogChart -> ChartReplayWindow((app.getFeature(task)))
+                is Task.Type.ReplaySettings -> SettingsWindow(app.getFeature(task))
+                is Task.Type.DataCapture -> DataCaptureWindow((app.getFeature(task)))
             }
         }
         println("task $task")

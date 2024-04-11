@@ -8,7 +8,7 @@ class SettingsFeature(
 ) : Feature() {
 
     fun onWindowClose() {
-        close()
+        stop()
         windowClose()
     }
 }

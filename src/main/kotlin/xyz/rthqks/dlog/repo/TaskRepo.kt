@@ -18,6 +18,10 @@ class TaskRepo(
         taskQueries.insert(TaskEnt(-1, task.type.name, task.fileName))
     }
 
+    suspend fun update(task: Task) {
+        taskQueries.update(task.type.name, task.fileName, task.id)
+    }
+
     suspend fun delete(id: Long) {
         taskQueries.delete(id)
     }
@@ -54,6 +58,6 @@ data class Task(
     }
 }
 
-data class TaskScope(val task: Task) : KoinScopeComponent {
+class TaskScope : KoinScopeComponent {
     override val scope: Scope by getOrCreateScope()
 }

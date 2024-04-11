@@ -3,11 +3,11 @@ package xyz.rthqks.dlog.logic.capture
 import xyz.rthqks.dlog.io.DataCaptureConfig
 import xyz.rthqks.dlog.io.DataCaptureService
 
-class OpenDataCapture(
+class SendDataFrame(
     private val dataCaptureService: DataCaptureService
 ) {
 
-    operator fun invoke(config: DataCaptureConfig) {
-        dataCaptureService.open(config)
+    operator fun invoke(config: DataCaptureConfig, value: String) {
+        dataCaptureService.send(config, value)
     }
 }

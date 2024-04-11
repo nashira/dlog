@@ -22,7 +22,10 @@ import xyz.rthqks.dlog.feature.app.AppFeature
 import xyz.rthqks.dlog.feature.app.MenuFeature
 import xyz.rthqks.dlog.io.DataCaptureService
 import xyz.rthqks.dlog.io.websocket.WebsocketClient
+import xyz.rthqks.dlog.logic.capture.GetDataFrameFlow
 import xyz.rthqks.dlog.logic.capture.OpenDataCapture
+import xyz.rthqks.dlog.logic.capture.SendDataFrame
+import xyz.rthqks.dlog.logic.task.UpdateTask
 
 fun appModule() = module {
     singleOf(::CreateChartStateFromAlog)
@@ -37,6 +40,8 @@ fun appModule() = module {
     singleOf(::SettingsRepo)
     singleOf(::TaskRepo)
     singleOf(::DataCaptureService)
+    singleOf(::GetDataFrameFlow)
+    singleOf(::SendDataFrame)
 
     singleOf(::AppFeature)
     singleOf(::MenuFeature)
@@ -55,6 +60,7 @@ fun appModule() = module {
 fun logicModule() = module {
     singleOf(::GetTasks)
     singleOf(::CreateTask)
+    singleOf(::UpdateTask)
     singleOf(::DeleteTask)
     singleOf(::OpenDataCapture)
 }

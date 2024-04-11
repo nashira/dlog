@@ -12,5 +12,8 @@ SELECT * FROM TaskEnt;
 insert:
 INSERT INTO TaskEnt(type, fileName) VALUES ?;
 
+update:
+UPDATE TaskEnt SET (type, fileName) = (?, ?) WHERE id = ?;
+
 delete:
 DELETE FROM TaskEnt WHERE id = ?;

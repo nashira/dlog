@@ -39,7 +39,7 @@ class ChartFeature(
     }
 
     fun onWindowClose() {
-        close()
+        stop()
         windowClose()
     }
 }

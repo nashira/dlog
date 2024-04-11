@@ -1,6 +1,7 @@
 package xyz.rthqks.dlog.io
 
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
 import xyz.rthqks.dlog.logic.CreateAlogFromMap
@@ -15,9 +16,15 @@ class AlogReplayClient(
     private val createAlogFromMap: CreateAlogFromMap,
 //    private val getAlogToDataCaptureSettings: GetAlogToDataCaptureSettings,
 ) : DataCaptureClient {
+    override val receive: SharedFlow<Map<String, Double>>
+        get() = TODO("Not yet implemented")
 
     override suspend fun open() {
 
+    }
+
+    override suspend fun send(value: String) {
+        TODO("Not yet implemented")
     }
 
     operator fun invoke(fileName: String) = flow {
